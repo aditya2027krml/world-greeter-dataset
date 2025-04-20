@@ -118,3 +118,11 @@ If you use this dataset in your work, please cite it as:
   url={https://your-github-or-dataset-link.com},
   note={Version 1.0}
 }
+
+## 📬 Contact
+
+Feel free to reach out for suggestions, collaborations, or feedback!
+
+## ⭐️ Show Your Support
+
+If you like this project, consider giving it a ⭐ on GitHub!
