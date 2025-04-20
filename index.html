@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>World Greeter Explorer</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #4361ee;
+            --secondary: #3f37c9;
+            --accent: #4895ef;
+            --light: #f8f9fa;
+            --dark: #212529;
+            --card-bg: #ffffff;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f5f7fa;
+            color: var(--dark);
+            line-height: 1.6;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 2rem;
+            padding: 1rem;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            border-radius: 10px;
+            box-shadow: var(--shadow);
+        }
+
+        header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        header p {
+            opacity: 0.9;
+            font-size: 1.1rem;
+        }
+
+        .app-container {
+            background: var(--card-bg);
+            border-radius: 10px;
+            box-shadow: var(--shadow);
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .search-box {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        #country-input {
+            flex: 1;
+            padding: 0.8rem 1rem;
+            border: 2px solid #ddd;
+            border-radius: 50px;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+
+        #country-input:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.2);
+        }
+
+        button {
+            padding: 0.8rem 1.5rem;
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        button:hover {
+            background-color: var(--secondary);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+
+        #voice-btn {
+            padding: 0.8rem;
+            min-width: 50px;
+            justify-content: center;
+        }
+
+        .result-container {
+            min-height: 400px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 2rem;
+            margin-top: 1rem;
+            flex-direction: column;
+        }
+
+        .country-display {
+            text-align: center;
+            width: 100%;
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .greeting-card {
+            background: var(--card-bg);
+            border-radius: 10px;
+            padding: 2rem;
+            box-shadow: var(--shadow);
+            margin-bottom: 1.5rem;
+            width: 100%;
+        }
+
+        .greeting-text {
+            font-size: 2rem;
+            margin: 1rem 0;
+            color: var(--primary);
+        }
+
+        .image-options {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin: 1.5rem 0;
+        }
+
+        .image-option {
+            padding: 0.8rem 1.5rem;
+            background: var(--light);
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .image-option:hover {
+            background: var(--accent);
+            color: white;
+        }
+
+        .image-option.active {
+            background: var(--primary);
+            color: white;
+        }
+
+        .image-display {
+            width: 100%;
+            max-width: 600px;
+            margin: 0 auto;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+        }
+
+        .image-display img {
+            width: 100%;
+            height: auto;
+            display: block;
+            transition: transform 0.3s;
+        }
+
+        .image-display img:hover {
+            transform: scale(1.02);
+        }
+
+        .recent-countries {
+            margin-top: 2rem;
+            width: 100%;
+        }
+
+        .recent-countries h3 {
+            margin-bottom: 1rem;
+            color: var(--primary);
+        }
+
+        .recent-list {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .recent-item {
+            padding: 0.5rem 1rem;
+            background: var(--light);
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .recent-item:hover {
+            background: var(--accent);
+            color: white;
+        }
+
+        .error-message {
+            text-align: center;
+            padding: 2rem;
+            color: var(--warning);
+        }
+
+        .listening {
+            background-color: red !important;
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(255, 0, 0, 0.7); }
+            70% { box-shadow: 0 0 0 10px rgba(255, 0, 0, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(255, 0, 0, 0); }
+        }
+
+        @media (max-width: 768px) {
+            .search-box {
+                flex-wrap: wrap;
+            }
+            
+            .image-options {
+                flex-direction: column;
+            }
+            
+            .greeting-text {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1><i class="fas fa-globe-americas"></i> World Greeter Explorer</h1>
+            <p>Discover cultures through greetings, flags, and landmarks</p>
+        </header>
+
+        <div class="app-container">
+            <div class="search-box">
+                <input type="text" id="country-input" placeholder="Search country..." autocomplete="off">
+                <button id="voice-btn"><i class="fas fa-microphone"></i></button>
+                <button id="search-btn"><i class="fas fa-search"></i> Search</button>
+                <button id="random-btn"><i class="fas fa-random"></i> Random</button>
+            </div>
+
+            <div class="result-container" id="result-container">
+                <div class="welcome-message">
+                    <h2>Welcome to World Greeter!</h2>
+                    <p>Search for a country to discover its traditional greeting</p>
+                    <div>👋🌎✨</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Built-in country data (no CSV upload needed)
+        const countries = [
+            {
+                code: 'CN',
+                name: 'China',
+                greeting: 'Nǐ hǎo!',
+                language: 'Mandarin',
+                region: 'Asia',
+                flag: 'https://flagcdn.com/w320/cn.jpg',
+                landmark: 'https://images.unsplash.com/photo-1547981609-4b6bfe67ca0b?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80'
+            },
+            {
+                code: 'IN',
+                name: 'India',
+                greeting: 'Namaste!',
+                language: 'Hindi',
+                region: 'Asia',
+                flag: 'https://flagcdn.com/w320/in.jpg',
+                landmark: 'https://images.unsplash.com/photo-1524492412937-b28074a5d7da?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80'
+            },
+            {
+                code: 'FR',
+                name: 'France',
+                greeting: 'Bonjour!',
+                language: 'French',
+                region: 'Europe',
+                flag: 'https://flagcdn.com/w320/fr.jpg',
+                landmark: 'https://images.unsplash.com/photo-1502602898657-3e91760cbb34?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80'
+            },
+            {
+                code: 'US',
+                name: 'USA',
+                greeting: 'Hello!',
+                language: 'English',
+                region: 'Americas',
+                flag: 'https://flagcdn.com/w320/us.jpg',
+                landmark: 'https://images.unsplash.com/photo-1485738422979-f5c462d49f74?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80'
+            },
+            {
+                code: 'JP',
+                name: 'Japan',
+                greeting: 'Konnichiwa!',
+                language: 'Japanese',
+                region: 'Asia',
+                flag: 'https://flagcdn.com/w320/jp.jpg',
+                landmark: 'https://images.unsplash.com/photo-1492571350019-22de08371fd3?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80'
+            }
+        ];
+
+        // DOM elements
+        const countryInput = document.getElementById('country-input');
+        const searchBtn = document.getElementById('search-btn');
+        const randomBtn = document.getElementById('random-btn');
+        const voiceBtn = document.getElementById('voice-btn');
+        const resultContainer = document.getElementById('result-container');
+
+        // Recent countries
+        let recentCountries = [];
+
+        // Initialize the app
+        function init() {
+            showWelcomeMessage();
+            addEventListeners();
+        }
+
+        // Add event listeners
+        function addEventListeners() {
+            searchBtn.addEventListener('click', searchCountry);
+            randomBtn.addEventListener('click', showRandomCountry);
+            voiceBtn.addEventListener('click', startVoiceRecognition);
+            countryInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') searchCountry();
+            });
+        }
+
+        // Show country details
+        function showCountry(country) {
+            // Add to recent countries
+            if (!recentCountries.some(c => c.code === country.code)) {
+                recentCountries.unshift(country);
+                if (recentCountries.length > 5) recentCountries.pop();
+            }
+
+            resultContainer.innerHTML = `
+                <div class="country-display">
+                    <div class="greeting-card">
+                        <h2>${country.name}</h2>
+                        <div class="greeting-text">${country.greeting}</div>
+                        <div class="country-info">
+                            <p><strong>Language:</strong> ${country.language}</p>
+                            <p><strong>Region:</strong> ${country.region}</p>
+                        </div>
+                        <div class="action-buttons">
+                            <button id="hear-greeting"><i class="fas fa-volume-up"></i> Hear Greeting</button>
+                        </div>
+                    </div>
+                    
+                    <div class="image-options">
+                        <div class="image-option active" data-type="flag">Show Flag</div>
+                        <div class="image-option" data-type="landmark">Show Landmark</div>
+                    </div>
+                    
+                    <div class="image-display">
+                        <img src="${country.flag}" alt="${country.name} flag" id="displayed-image">
+                    </div>
+                    
+                    ${recentCountries.length > 0 ? `
+                    <div class="recent-countries">
+                        <h3>Recently Viewed</h3>
+                        <div class="recent-list">
+                            ${recentCountries.map(c => `
+                                <div class="recent-item" data-code="${c.code}">${c.name}</div>
+                            `).join('')}
+                        </div>
+                    </div>
+                    ` : ''}
+                </div>
+            `;
+
+            // Add event listeners for new elements
+            document.getElementById('hear-greeting')?.addEventListener('click', () => {
+                speakGreeting(country.greeting);
+            });
+
+            // Image option switcher
+            document.querySelectorAll('.image-option').forEach(option => {
+                option.addEventListener('click', () => {
+                    document.querySelectorAll('.image-option').forEach(opt => 
+                        opt.classList.remove('active'));
+                    option.classList.add('active');
+                    
+                    const imageUrl = option.dataset.type === 'flag' 
+                        ? country.flag 
+                        : country.landmark;
+                    const imageAlt = option.dataset.type === 'flag'
+                        ? `${country.name} flag`
+                        : `${country.name} landmark`;
+                    
+                    document.getElementById('displayed-image').src = imageUrl;
+                    document.getElementById('displayed-image').alt = imageAlt;
+                });
+            });
+
+            // Recent country click handler
+            document.querySelectorAll('.recent-item').forEach(item => {
+                item.addEventListener('click', () => {
+                    const countryCode = item.dataset.code;
+                    const country = countries.find(c => c.code === countryCode);
+                    if (country) showCountry(country);
+                });
+            });
+        }
+
+        // Text-to-speech function
+        function speakGreeting(text) {
+            if ('speechSynthesis' in window) {
+                const utterance = new SpeechSynthesisUtterance(text);
+                window.speechSynthesis.speak(utterance);
+            } else {
+                alert("Text-to-speech not supported in your browser");
+            }
+        }
+
+        // Voice recognition function
+        function startVoiceRecognition() {
+            if (!('webkitSpeechRecognition' in window)) {
+                alert("Voice recognition not supported in your browser");
+                return;
+            }
+
+            const recognition = new webkitSpeechRecognition();
+            recognition.continuous = false;
+            recognition.interimResults = false;
+
+            recognition.onstart = () => {
+                voiceBtn.classList.add('listening');
+                voiceBtn.innerHTML = '<i class="fas fa-microphone-slash"></i>';
+            };
+
+            recognition.onresult = (event) => {
+                const transcript = event.results[0][0].transcript;
+                countryInput.value = transcript;
+                searchCountry();
+            };
+
+            recognition.onerror = (event) => {
+                console.error('Speech recognition error', event.error);
+                voiceBtn.classList.remove('listening');
+                voiceBtn.innerHTML = '<i class="fas fa-microphone"></i>';
+            };
+
+            recognition.onend = () => {
+                voiceBtn.classList.remove('listening');
+                voiceBtn.innerHTML = '<i class="fas fa-microphone"></i>';
+            };
+
+            recognition.start();
+        }
+
+        // Search function
+        function searchCountry() {
+            const query = countryInput.value.trim().toLowerCase();
+            if (!query) {
+                showWelcomeMessage();
+                return;
+            }
+
+            const foundCountry = countries.find(country => 
+                country.name.toLowerCase().includes(query) || 
+                country.code.toLowerCase() === query
+            );
+
+            if (foundCountry) {
+                showCountry(foundCountry);
+            } else {
+                resultContainer.innerHTML = `
+                    <div class="error-message">
+                        <h2>Country not found</h2>
+                        <p>We'll add "${query}" soon! Try another country.</p>
+                        <div>🤔</div>
+                    </div>
+                `;
+            }
+        }
+
+        // Show random country
+        function showRandomCountry() {
+            const randomIndex = Math.floor(Math.random() * countries.length);
+            showCountry(countries[randomIndex]);
+        }
+
+        // Show welcome message
+        function showWelcomeMessage() {
+            resultContainer.innerHTML = `
+                <div class="welcome-message">
+                    <h2>Welcome to World Greeter!</h2>
+                    <p>Search for a country to discover its traditional greeting</p>
+                    <div>👋🌎✨</div>
+                </div>
+            `;
+        }
+
+        // Initialize the app
+        init();
+    </script>
+</body>
+</html>
