@@ -113,9 +113,9 @@ If you use this dataset in your work, please cite it as:
 ```bibtex
 @misc{worldgreeter2025,
   title={World Greeter: A Multimodal Cultural Dataset},
-  author={Your Name},
+  author={Aditya Kumar},
   year={2025},
-  url={https://your-github-or-dataset-link.com},
+  url={[https://your-github-or-dataset-link.com](https://github.com/aditya2027krml)},
   note={Version 1.0}
 }
 
